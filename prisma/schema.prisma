@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  username  String   @unique
+  password  String
+  todos     Todo[]
+}
+
+model Todo {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  doneAt    DateTime?
+  title     String
+  done      Boolean
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  todoTags  TodoTag[]
+}
+
+model Tag {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  name      String
+  todoTags  TodoTag[]
+}
+
+model TodoTag {
+  id     String @id @default(cuid())
+  todoId String
+  tagId  String
+  todo   Todo   @relation(fields: [todoId], references: [id])
+  tag    Tag    @relation(fields: [tagId], references: [id])
+}
