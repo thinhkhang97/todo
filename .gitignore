@@ -36,3 +36,5 @@ lerna-debug.log*
 
 dev.db
 dev.db-journal
+
+*.pem
