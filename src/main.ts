@@ -12,6 +12,15 @@ async function bootstrap() {
     .setDescription('The todo API description')
     .setVersion('1.0')
     .addTag('todos')
+    .addBearerAuth(
+      {
+        in: 'header',
+        name: 'Authorization',
+        type: 'http',
+        scheme: 'Bearer',
+      },
+      'access-token',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

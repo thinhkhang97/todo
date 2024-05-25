@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
+import { omit } from 'lodash';
 
 @Injectable()
 export class UserService {
@@ -11,5 +12,9 @@ export class UserService {
 
   async createUser(username: string, password: string) {
     return await this._userRepository.create({ username, password });
+  }
+
+  async getUserById(id: string) {
+    return omit(await this._userRepository.findUnique({ id }), ['password']);
   }
 }
