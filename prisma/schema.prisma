@@ -19,6 +19,7 @@ model User {
   username  String   @unique
   password  String
   todos     Todo[]
+  tags      Tag[]
 }
 
 model Todo {
@@ -26,7 +27,6 @@ model Todo {
   createdAt DateTime  @default(now())
   doneAt    DateTime?
   title     String
-  done      Boolean
   userId    String
   user      User      @relation(fields: [userId], references: [id])
   todoTags  TodoTag[]
@@ -35,8 +35,11 @@ model Todo {
 model Tag {
   id        String    @id @default(cuid())
   createdAt DateTime  @default(now())
+  userId    String
   name      String
   todoTags  TodoTag[]
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model TodoTag {
