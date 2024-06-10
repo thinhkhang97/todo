@@ -1,0 +1,17 @@
+@startuml
+left to right direction
+actor User
+
+rectangle "Todo Application" {
+    User --> (Add New Todo)
+    User --> (View Todo List)
+    User --> (Delete Todo)
+    User --> (Mark Todo as Complete)
+    User --> (Filter Todo List)
+    User --> (Create tag)
+    User --> (Add Tag to Todo)
+    User --> (View Todo Tags)
+    User --> (Edit Todo Tag)
+    User --> (Delete Todo Tag)
+}
+@enduml
