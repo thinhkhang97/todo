@@ -11,6 +11,11 @@ export interface CreateTodoProps {
   userId: string;
 }
 
+export interface GetTodoByIdProps {
+  userId: string;
+  todoId: string;
+}
+
 export interface Tag {
   id: string;
   createdAt: string;

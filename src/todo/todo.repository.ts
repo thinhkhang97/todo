@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTodoProps } from './types';
+import { CreateTodoProps, GetTodoByIdProps } from './types';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class TodoRepository {
     });
   }
 
-  findOne(props: { userId: string; todoId: string }) {
+  findOne(props: GetTodoByIdProps) {
     return this._prismaService.todo.findUnique({
       where: {
         id: props.todoId,
