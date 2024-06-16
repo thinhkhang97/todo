@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard, User } from 'src/common';
 import { CreateTodoDto } from './dtos/create-todo.dto';
@@ -13,5 +13,15 @@ export class TodoController {
   @Post()
   create(@Body() todo: CreateTodoDto, @User() user: { id: string }) {
     return this._todoService.create({ title: todo.title, userId: user.id });
+  }
+
+  @Get()
+  findAll(@User() user: { id: string }) {
+    return this._todoService.findAll(user.id);
+  }
+
+  @Get('/:todoId')
+  findOne(@User() user: { id: string }, @Param('todoId') todoId: string) {
+    return this._todoService.findOne({ userId: user.id, todoId: todoId });
   }
 }

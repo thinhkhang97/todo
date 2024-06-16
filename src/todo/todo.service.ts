@@ -9,4 +9,12 @@ export class TodoService {
   create(props: CreateTodoProps) {
     return this._todoRepository.create(props);
   }
+
+  findAll(userId: string) {
+    return this._todoRepository.findAll(userId);
+  }
+
+  findOne(props: { userId: string; todoId: string }) {
+    return this._todoRepository.findOne(props);
+  }
 }

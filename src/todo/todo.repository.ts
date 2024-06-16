@@ -14,4 +14,21 @@ export class TodoRepository {
       },
     });
   }
+
+  findAll(userId: string) {
+    return this._prismaService.todo.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
+
+  findOne(props: { userId: string; todoId: string }) {
+    return this._prismaService.todo.findUnique({
+      where: {
+        id: props.todoId,
+        userId: props.userId,
+      },
+    });
+  }
 }
