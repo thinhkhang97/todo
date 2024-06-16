@@ -16,12 +16,12 @@ export class TodoController {
   }
 
   @Get()
-  findAll(@User() user: { id: string }) {
+  getTodoList(@User() user: { id: string }) {
     return this._todoService.findAll(user.id);
   }
 
   @Get('/:todoId')
-  findOne(@User() user: { id: string }, @Param('todoId') todoId: string) {
+  getTaskById(@User() user: { id: string }, @Param('todoId') todoId: string) {
     return this._todoService.findOne({ userId: user.id, todoId: todoId });
   }
 }
