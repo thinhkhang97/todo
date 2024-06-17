@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TodoRepository } from './todo.repository';
-import { CreateTodoProps } from './types';
+import { CreateTodoProps, GetTodoByIdProps } from './types';
 
 @Injectable()
 export class TodoService {
@@ -8,5 +8,17 @@ export class TodoService {
 
   create(props: CreateTodoProps) {
     return this._todoRepository.create(props);
+  }
+
+  findAll(userId: string) {
+    return this._todoRepository.findAll(userId);
+  }
+
+  async findOne(props: GetTodoByIdProps) {
+    const task = await this._todoRepository.findOne(props);
+    if (!task) {
+      throw new NotFoundException();
+    }
+    return task;
   }
 }
