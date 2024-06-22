@@ -1,0 +1,36 @@
+@startuml
+actor User as user
+participant Web as web
+participant Backend as BE
+database DB as db
+
+== Sign up ==
+user -> web: Submit user name, password
+web -> BE: Request to sign up
+BE -> BE: Verify user data
+BE -> db: Store user data
+BE --> web: Return success data
+web --> user: Show success message
+
+== Sign in ==
+user -> web: Submit user name, password
+web -> BE: Request to sign in
+BE -> db: Find user data
+BE -> BE: Verify user password
+BE --> web: Return access token
+web --> web: Store access token in local storage
+web --> user: Redirect to home page
+
+== Get user info ==
+user -> web: Go to profile page
+web -> BE: Request to get user info\nwith access token in header
+BE -> BE: Extract user info in access token, user id
+alt success case
+BE -> db: Find user data by user id
+BE --> web: Return user info
+web --> user: Show user info
+else token invalid or expired case
+BE --> web: Return 401 Unauthorized
+web --> user: Redirect to sign in page
+end
+@enduml
