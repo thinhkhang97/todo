@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTodoProps, GetTodoByIdProps } from './types';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateTodoProps, DeleteTodoProps, GetTodoByIdProps } from './types';
 
 @Injectable()
 export class TodoRepository {
@@ -28,6 +28,14 @@ export class TodoRepository {
       where: {
         id: props.todoId,
         userId: props.userId,
+      },
+    });
+  }
+
+  deleteTask(props: DeleteTodoProps) {
+    return this._prismaService.todo.delete({
+      where: {
+        id: props.id,
       },
     });
   }
