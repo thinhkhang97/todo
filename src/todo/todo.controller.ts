@@ -23,11 +23,6 @@ export class TodoController {
     return this._todoService.create({ title: todo.title, userId: user.id });
   }
 
-  @Delete('/delete/:id')
-  deleteTodoTask(@User() user: { id: string }, @Param('id') id: string) {
-    return this._todoService.deleteTask({ id, userId: user.id });
-  }
-
   @Get()
   getTodoList(@User() user: { id: string }) {
     return this._todoService.findAll(user.id);
@@ -36,5 +31,10 @@ export class TodoController {
   @Get('/:todoId')
   getTaskById(@User() user: { id: string }, @Param('todoId') todoId: string) {
     return this._todoService.findOne({ userId: user.id, todoId: todoId });
+  }
+
+  @Delete('/delete/:id')
+  deleteTodoTask(@User() user: { id: string }, @Param('id') id: string) {
+    return this._todoService.deleteTask({ id, userId: user.id });
   }
 }

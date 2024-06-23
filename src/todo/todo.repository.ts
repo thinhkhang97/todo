@@ -15,14 +15,6 @@ export class TodoRepository {
     });
   }
 
-  deleteTask(props: DeleteTodoProps) {
-    return this._prismaService.todo.delete({
-      where: {
-        id: props.id,
-      },
-    });
-  }
-
   findAll(userId: string) {
     return this._prismaService.todo.findMany({
       where: {
@@ -36,6 +28,14 @@ export class TodoRepository {
       where: {
         id: props.todoId,
         userId: props.userId,
+      },
+    });
+  }
+
+  deleteTask(props: DeleteTodoProps) {
+    return this._prismaService.todo.delete({
+      where: {
+        id: props.id,
       },
     });
   }

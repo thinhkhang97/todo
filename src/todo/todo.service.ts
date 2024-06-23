@@ -9,11 +9,6 @@ export class TodoService {
     return this._todoRepository.create(props);
   }
 
-  deleteTask(props: DeleteTodoProps) {
-    this._todoRepository.deleteTask(props);
-    return;
-  }
-
   findAll(userId: string) {
     return this._todoRepository.findAll(userId);
   }
@@ -24,5 +19,11 @@ export class TodoService {
       throw new NotFoundException();
     }
     return task;
+  }
+
+  async deleteTask(props: DeleteTodoProps) {
+    await this.findOne({ todoId: props.id, userId: props.userId });
+    this._todoRepository.deleteTask(props);
+    return;
   }
 }
