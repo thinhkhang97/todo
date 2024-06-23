@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   UseGuards,
@@ -25,5 +26,15 @@ export class TodoController {
   @Delete('/delete/:id')
   deleteTodoTask(@User() user: { id: string }, @Param('id') id: string) {
     return this._todoService.deleteTask({ id, userId: user.id });
+  }
+
+  @Get()
+  getTodoList(@User() user: { id: string }) {
+    return this._todoService.findAll(user.id);
+  }
+
+  @Get('/:todoId')
+  getTaskById(@User() user: { id: string }, @Param('todoId') todoId: string) {
+    return this._todoService.findOne({ userId: user.id, todoId: todoId });
   }
 }
