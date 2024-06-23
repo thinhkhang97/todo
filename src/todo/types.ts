@@ -12,11 +12,26 @@ export interface CreateTodoProps {
 }
 
 export interface DeleteTodoProps {
-  id: string;
   userId: string;
+  todoId: string;
+}
+
+export interface FilterTodoProps {
+  search: string;
+  status: TodoStatus;
+}
+
+export interface GetAllTodoProps {
+  userId: string;
+  filter: Partial<FilterTodoProps>;
 }
 
 export interface GetTodoByIdProps {
+  userId: string;
+  todoId: string;
+}
+
+export interface MarkTodoAsCompletedProps {
   userId: string;
   todoId: string;
 }
@@ -26,4 +41,9 @@ export interface Tag {
   createdAt: string;
   userId: string;
   name: string;
+}
+
+export enum TodoStatus {
+  COMPLETED = 'COMPLETED',
+  UNCOMPLETED = 'UNCOMPLETED',
 }

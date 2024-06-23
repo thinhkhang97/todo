@@ -1,6 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateTodoProps, DeleteTodoProps, GetTodoByIdProps } from './types';
+import {
+  CreateTodoProps,
+  DeleteTodoProps,
+  GetAllTodoProps,
+  GetTodoByIdProps,
+  MarkTodoAsCompletedProps,
+  TodoStatus,
+} from './types';
 
 @Injectable()
 export class TodoRepository {
@@ -15,11 +23,26 @@ export class TodoRepository {
     });
   }
 
-  findAll(userId: string) {
+  findAll(props: GetAllTodoProps) {
+    const {
+      filter: { search, status },
+      userId,
+    } = props;
+
+    // Create a base query object with filters that always apply.
+    const queryFilters: Prisma.TodoWhereInput = {
+      userId: userId,
+      title: search ? { contains: search } : undefined,
+    };
+
+    // Conditionally add status filter if provided.
+    if (status) {
+      queryFilters.doneAt =
+        status === TodoStatus.COMPLETED ? { not: null } : null;
+    }
+
     return this._prismaService.todo.findMany({
-      where: {
-        userId,
-      },
+      where: queryFilters,
     });
   }
 
@@ -32,10 +55,22 @@ export class TodoRepository {
     });
   }
 
-  deleteTask(props: DeleteTodoProps) {
+  deleteTodo(props: DeleteTodoProps) {
     return this._prismaService.todo.delete({
       where: {
-        id: props.id,
+        id: props.userId,
+      },
+    });
+  }
+
+  markTodoAsCompleted(props: MarkTodoAsCompletedProps) {
+    return this._prismaService.todo.update({
+      where: {
+        id: props.todoId,
+        userId: props.userId,
+      },
+      data: {
+        doneAt: new Date(),
       },
     });
   }
