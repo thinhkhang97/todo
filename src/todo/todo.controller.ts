@@ -45,7 +45,7 @@ export class TodoController {
     return this._todoService.findOne({ userId: user.id, todoId: todoId });
   }
 
-  @Delete('/delete/:id')
+  @Delete('/:id')
   deleteTodo(
     @User() user: { id: string },
     @Param('id') id: string,
@@ -53,12 +53,12 @@ export class TodoController {
     return this._todoService.deleteTodo({ todoId: id, userId: user.id });
   }
 
-  @Patch('/mark-as-completed/:id')
-  markTodoAsCompleted(
+  @Patch('/complete/:id')
+  completeTodo(
     @User() user: { id: string },
     @Param('id') id: string,
   ): Promise<Todo> {
-    return this._todoService.markTodoAsCompleted({
+    return this._todoService.completeTodo({
       todoId: id,
       userId: user.id,
     });

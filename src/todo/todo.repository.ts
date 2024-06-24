@@ -6,7 +6,7 @@ import {
   DeleteTodoProps,
   GetAllTodoProps,
   GetTodoByIdProps,
-  MarkTodoAsCompletedProps,
+  CompleteTodoProps,
   TodoStatus,
 } from './types';
 
@@ -63,7 +63,7 @@ export class TodoRepository {
     });
   }
 
-  markTodoAsCompleted(props: MarkTodoAsCompletedProps) {
+  completeTodo(props: CompleteTodoProps) {
     return this._prismaService.todo.update({
       where: {
         id: props.todoId,

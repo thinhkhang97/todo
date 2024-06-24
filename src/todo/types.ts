@@ -31,7 +31,7 @@ export interface GetTodoByIdProps {
   todoId: string;
 }
 
-export interface MarkTodoAsCompletedProps {
+export interface CompleteTodoProps {
   userId: string;
   todoId: string;
 }

@@ -10,7 +10,7 @@ import {
   DeleteTodoProps,
   GetAllTodoProps,
   GetTodoByIdProps,
-  MarkTodoAsCompletedProps,
+  CompleteTodoProps,
   Todo,
 } from './types';
 @Injectable()
@@ -39,7 +39,7 @@ export class TodoService {
     return;
   }
 
-  async markTodoAsCompleted(props: MarkTodoAsCompletedProps): Promise<Todo> {
+  async completeTodo(props: CompleteTodoProps): Promise<Todo> {
     const todoBeforeUpdating = await this.findOne(props);
     if (todoBeforeUpdating.doneAt) {
       throw new HttpException(
@@ -47,9 +47,7 @@ export class TodoService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-    const todoAfterUpdating = await this._todoRepository.markTodoAsCompleted(
-      props,
-    );
+    const todoAfterUpdating = await this._todoRepository.completeTodo(props);
     return todoAfterUpdating;
   }
 }
