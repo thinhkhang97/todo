@@ -21,16 +21,18 @@ export class AuthGuard implements CanActivate {
       return false;
     }
 
-    const token = authHeader.replace('Bearer ', '');
-    const user = this._jwtService.verify<{ username: string; id: string }>(
-      token,
-    );
-
-    if (!user) {
-      throw new UnauthorizedException();
+    try {
+      const token = authHeader.replace('Bearer ', '');
+      const user = this._jwtService.verify<{ username: string; id: string }>(
+        token,
+      );
+      if (!user) {
+        throw new UnauthorizedException();
+      }
+      request.user = user;
+      return true;
+    } catch (error) {
+      return false;
     }
-
-    request.user = user;
-    return true;
   }
 }

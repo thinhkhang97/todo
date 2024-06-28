@@ -1,16 +1,15 @@
 import {
-  HttpException,
-  HttpStatus,
+  BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { TodoRepository } from './todo.repository';
 import {
+  CompleteTodoProps,
   CreateTodoProps,
   DeleteTodoProps,
   GetAllTodoProps,
   GetTodoByIdProps,
-  CompleteTodoProps,
   Todo,
 } from './types';
 @Injectable()
@@ -42,10 +41,7 @@ export class TodoService {
   async completeTodo(props: CompleteTodoProps): Promise<Todo> {
     const todoBeforeUpdating = await this.findOne(props);
     if (todoBeforeUpdating.doneAt) {
-      throw new HttpException(
-        'Todo is already completed',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new BadRequestException('Todo is already completed');
     }
     const todoAfterUpdating = await this._todoRepository.completeTodo(props);
     return todoAfterUpdating;
