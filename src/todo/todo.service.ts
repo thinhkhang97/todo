@@ -1,29 +1,49 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { TodoRepository } from './todo.repository';
-import { CreateTodoProps, DeleteTodoProps, GetTodoByIdProps } from './types';
+import {
+  CompleteTodoProps,
+  CreateTodoProps,
+  DeleteTodoProps,
+  GetAllTodoProps,
+  GetTodoByIdProps,
+  Todo,
+} from './types';
 @Injectable()
 export class TodoService {
   constructor(private readonly _todoRepository: TodoRepository) {}
 
-  create(props: CreateTodoProps) {
+  create(props: CreateTodoProps): Promise<Todo> {
     return this._todoRepository.create(props);
   }
 
-  findAll(userId: string) {
-    return this._todoRepository.findAll(userId);
+  findAll(props: GetAllTodoProps): Promise<Todo[]> {
+    return this._todoRepository.findAll(props);
   }
 
-  async findOne(props: GetTodoByIdProps) {
-    const task = await this._todoRepository.findOne(props);
-    if (!task) {
+  async findOne(props: GetTodoByIdProps): Promise<Todo> {
+    const todo = await this._todoRepository.findOne(props);
+    if (!todo) {
       throw new NotFoundException();
     }
-    return task;
+    return todo;
   }
 
-  async deleteTask(props: DeleteTodoProps) {
-    await this.findOne({ todoId: props.id, userId: props.userId });
-    this._todoRepository.deleteTask(props);
+  async deleteTodo(props: DeleteTodoProps): Promise<void> {
+    await this.findOne(props);
+    this._todoRepository.deleteTodo(props);
     return;
+  }
+
+  async completeTodo(props: CompleteTodoProps): Promise<Todo> {
+    const todoBeforeUpdating = await this.findOne(props);
+    if (todoBeforeUpdating.doneAt) {
+      throw new BadRequestException('Todo is already completed');
+    }
+    const todoAfterUpdating = await this._todoRepository.completeTodo(props);
+    return todoAfterUpdating;
   }
 }
